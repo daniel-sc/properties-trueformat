@@ -5,11 +5,11 @@
  * They check round-trip parsing/serialization and simple modification.
  **********************************************************************/
 import { describe, it, expect } from 'bun:test';
-import { parseProperties } from './propertiesParser.ts';
-import { PropertyEntry } from './model/propertyEntry.ts';
-import { PropertiesDocument } from './model/propertiesDocument.ts';
-import { CommentLine } from './model/commentLine.ts';
-import { BlankLine } from './model/blankLine.ts';
+import { parseProperties } from './propertiesParser';
+import { PropertyEntry } from './model/propertyEntry';
+import { PropertiesDocument } from './model/propertiesDocument';
+import { CommentLine } from './model/commentLine';
+import { BlankLine } from './model/blankLine';
 
 describe('parseProperties', () => {
   it('should roundtrip simple property', () => {

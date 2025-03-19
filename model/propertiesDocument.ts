@@ -1,6 +1,6 @@
-import type { BlankLine } from './blankLine.ts';
-import type { CommentLine } from './commentLine.ts';
-import type { PropertyEntry } from './propertyEntry.ts';
+import type { BlankLine } from './blankLine';
+import type { CommentLine } from './commentLine';
+import type { PropertyEntry } from './propertyEntry';
 
 /**
  * A PropertiesDocument is a container for all parsed nodes.

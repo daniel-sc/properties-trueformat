@@ -1,3 +1,6 @@
+[![npm](https://img.shields.io/npm/v/properties-trueformat)](https://www.npmjs.com/package/properties-trueformat)
+[![Coverage Status](https://coveralls.io/repos/github/daniel-sc/properties-trueformat/badge.svg?branch=main)](https://coveralls.io/github/daniel-sc/properties-trueformat?branch=main)
+
 # properties-trueformat
 
 properties-trueformat is a TypeScript library for parsing, editing, and serializing Java .properties files without losing any formatting details.

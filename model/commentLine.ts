@@ -1,4 +1,4 @@
-import type { PropertyNode } from './propertyNode.ts';
+import type { PropertyNode } from './propertyNode';
 
 /**
  * A comment line node (e.g. lines starting with '#' or '!').

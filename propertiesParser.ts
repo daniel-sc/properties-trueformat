@@ -1,8 +1,8 @@
-import { CommentLine } from './model/commentLine.ts';
-import { BlankLine } from './model/blankLine.ts';
-import type { ValueSegment } from './model/valueSegment.ts';
-import { PropertyEntry } from './model/propertyEntry.ts';
-import { PropertiesDocument } from './model/propertiesDocument.ts';
+import { CommentLine } from './model/commentLine';
+import { BlankLine } from './model/blankLine';
+import type { ValueSegment } from './model/valueSegment';
+import { PropertyEntry } from './model/propertyEntry';
+import { PropertiesDocument } from './model/propertiesDocument';
 
 /**
  * Checks whether the given line ends with an unescaped backslash.

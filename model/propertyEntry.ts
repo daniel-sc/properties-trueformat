@@ -1,5 +1,5 @@
-import type { PropertyNode } from './propertyNode.ts';
-import type { ValueSegment } from './valueSegment.ts';
+import type { PropertyNode } from './propertyNode';
+import type { ValueSegment } from './valueSegment';
 
 /**
  * A property entry node.

@@ -1,4 +1,4 @@
-import type { PropertyNode } from './propertyNode.ts';
+import type { PropertyNode } from './propertyNode';
 
 /**
  * A blank line node (which may contain whitespace).
