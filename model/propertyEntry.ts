@@ -24,6 +24,13 @@ export class PropertyEntry implements PropertyNode {
   }
 
   /**
+   * Returns the (unescaped!) key of the property entry.
+   */
+  getKey(): string {
+    return this.unescape(this.key);
+  }
+
+  /**
    * Returns the text value of the property entry.
    * This is the concatenation of all value segments.
    * Any escape sequences are unescaped.
@@ -55,13 +62,24 @@ export class PropertyEntry implements PropertyNode {
   }
 
   private unescape(s: string): string {
-    return s
-      .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
-      .replace(/\\\\/g, '\\')
-      .replace(/\\n/g, '\n')
-      .replace(/\\t/g, '\t')
-      .replace(/\\r/g, '\r')
-      .replace(/\\ /g, ' ');
+    return s.replace(/\\u[0-9a-fA-F]{4}|\\\\|\\n|\\t|\\r|^\\ |\\/g, (match) => {
+      switch (match) {
+        case '\\n':
+          return '\n';
+        case '\\t':
+          return '\t';
+        case '\\r':
+          return '\r';
+        case '\\\\':
+          return '\\';
+        case '\\ ':
+          return ' ';
+        case '\\': // ignore superfluous backslash
+          return '';
+        default:
+          return String.fromCharCode(parseInt(match.slice(2), 16));
+      }
+    });
   }
 
   private escapeUnicode(text: string) {

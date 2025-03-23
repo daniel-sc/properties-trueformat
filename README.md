@@ -15,16 +15,19 @@ Enjoy seamless, non-destructive editing of your Java properties files!
   Retains inline comments, blank lines, and all whitespace exactly as in the original file.
 
 - **Multi-line Value Support** \
-  Handles properties with multi-line values (using the backslash continuation) while preserving the exact line breaks and indents.
+  Handles properties with multi-line values (using the backslash continuation) while preserving the exact line breaks and indents.\
+  See `ValueSegment` and `PropertyEntry.valueSegments`.
 
 - **AST-based Editing** \
   Provides an Abstract Syntax Tree for precise modifications. Change a property’s value or add new entries without reformatting the rest of the file.
 
 - **Text Escaping and Unescaping** \
-  Automatically escapes and unescapes special characters (e.g., newlines, tabs, backslashes, and unicode characters) in property values.
+  Automatically escapes and unescapes special characters (e.g., newlines, tabs, backslashes, and unicode characters) in property values.\
+  See `PropertyEntry.getText()` and `PropertyEntry.setText(..)`.
 
 - **Default Separator and Newline Guessing** \
-  Automatically determines the most common separator and newline characters used in the document for consistent formatting.
+  Automatically determines the most common separator and newline characters used in the document for consistent formatting.\
+  See `PropertiesDocument.guessDefaults()`.
 
 ## Installation
 
@@ -76,8 +79,7 @@ expect(doc).toEqual(
 // Find and update a property, e.g., change "username"
 const entry = doc.nodes.filter((node) => node instanceof PropertyEntry).find((node) => node.key === 'indented_key');
 if (entry) {
-  // Update the first segment of the value (for single-line properties)
-  entry.valueSegments[0].text = 'updated value';
+  entry.setText('updated value');
 }
 
 // Serialize back to string (format preserved)

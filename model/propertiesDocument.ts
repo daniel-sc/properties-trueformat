@@ -9,7 +9,16 @@ export class PropertiesDocument {
   constructor(public nodes: (BlankLine | CommentLine | PropertyEntry)[]) {}
 
   toString(): string {
-    const { newLine } = this.guessDefaults();
+    const defaultsMemoized = () => {
+      let defaults: ReturnType<PropertiesDocument['guessDefaults']> | null = null;
+      return () => {
+        if (!defaults) {
+          defaults = this.guessDefaults();
+        }
+        return defaults;
+      };
+    };
+    const defaults = defaultsMemoized();
     return this.nodes
       .map((node, index) => {
         const nodeString = node.toString();
@@ -19,7 +28,7 @@ export class PropertiesDocument {
           node.valueSegments[node.valueSegments.length - 1]?.newline === '' &&
           index < this.nodes.length - 1
         ) {
-          return nodeString + newLine;
+          return nodeString + defaults().newLine;
         }
         return nodeString;
       })
@@ -27,15 +36,15 @@ export class PropertiesDocument {
   }
 
   /**
-   * Guesses the default separator, newline characters, and whether unicode characters are encoded for the document.
+   * Guesses the default separator, newline characters, and whether unicode characters are escaped for the document.
    * This is done by counting the occurrences of each separator, newline, and checking for unicode encoding in the document.
    *
-   * When a document is empty, the default separator is ': ', the newline is '\n' and unicode encoding is true.
+   * When a document is empty, the default separator is ': ', the newline is '\n' and escapedUnicode is true.
    */
   public guessDefaults(): {
     separator: string;
     newLine: string;
-    unicodeEncoded: boolean;
+    escapedUnicode: boolean;
   } {
     const separatorCounts = new Map<string, number>();
     const newLineCounts = new Map<string, number>();
@@ -68,8 +77,8 @@ export class PropertiesDocument {
 
     const separator = this.getMostCommon(separatorCounts) ?? ': ';
     const newLine = this.getMostCommon(newLineCounts) || '\n';
-    const unicodeEncoded = unicodeEncodedCount >= unicodeUnencodedCount;
-    return { separator, newLine, unicodeEncoded };
+    const escapedUnicode = unicodeEncodedCount >= unicodeUnencodedCount;
+    return { separator, newLine, escapedUnicode };
   }
 
   private getMostCommon(counts: Map<string, number>): string | undefined {

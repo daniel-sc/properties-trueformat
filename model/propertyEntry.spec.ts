@@ -2,6 +2,16 @@ import { describe, expect, it } from 'bun:test';
 import { PropertyEntry } from './propertyEntry';
 
 describe('PropertyEntry', () => {
+  describe('getKey', () => {
+    it('should return key', () => {
+      const entry = new PropertyEntry('  ', 'key', ': ', []);
+      expect(entry.getKey()).toBe('key');
+    });
+    it('should return unescaped key', () => {
+      const entry = new PropertyEntry('  ', 'key\\:', ': ', []);
+      expect(entry.getKey()).toBe('key:');
+    });
+  });
   describe('getText', () => {
     it('should return text for multi line segments', () => {
       const entry = new PropertyEntry('  ', 'key', ': ', [
@@ -31,6 +41,17 @@ describe('PropertyEntry', () => {
     it('should return unescaped whitespace', () => {
       const entry = new PropertyEntry('  ', 'key', ': ', [{ indent: '', text: '\\ ', newline: '\n' }]);
       expect(entry.getText()).toBe(' ');
+    });
+    it('should remove superfluous backslash escape', () => {
+      // see https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Properties.html#load(java.io.Reader)
+      const entry = new PropertyEntry('  ', 'key', ': ', [
+        { indent: '', text: 'with\\ escaped whitespace and quote\\"', newline: '\n' },
+      ]);
+      expect(entry.getText()).toBe('with escaped whitespace and quote"');
+    });
+    it('should handle subsequent escaped chars correctly', () => {
+      const entry = new PropertyEntry('  ', 'key', ': ', [{ indent: '', text: '\\\\n\\t', newline: '\n' }]);
+      expect(entry.getText()).toBe('\\n\t');
     });
   });
 

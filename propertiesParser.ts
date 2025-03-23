@@ -90,7 +90,10 @@ export function parseProperties(text: string): PropertiesDocument {
     let pos = 0;
     while (pos < lineWithoutIndent.length) {
       const ch = lineWithoutIndent[pos];
-      if (ch === '=' || ch === ':' || ch === ' ' || ch === '\t') {
+      if (
+        (ch === '=' || ch === ':' || ch === ' ' || ch === '\t') &&
+        (pos === 0 || lineWithoutIndent[pos - 1] !== '\\')
+      ) {
         break;
       }
       key += ch;

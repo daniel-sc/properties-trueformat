@@ -43,7 +43,7 @@ describe('PropertiesDocument', () => {
       expect(document.guessDefaults()).toEqual({
         separator: ': ',
         newLine: '\n',
-        unicodeEncoded: true,
+        escapedUnicode: true,
       });
     });
     it('should return default newline for single entry without newline', () => {
@@ -53,7 +53,7 @@ describe('PropertiesDocument', () => {
       expect(document.guessDefaults()).toEqual({
         separator: ': ',
         newLine: '\n',
-        unicodeEncoded: true,
+        escapedUnicode: true,
       });
     });
     it('should return newline and separator from the majority of entries', () => {
@@ -65,7 +65,7 @@ describe('PropertiesDocument', () => {
       expect(document.guessDefaults()).toEqual({
         separator: '=',
         newLine: '\r\n',
-        unicodeEncoded: true,
+        escapedUnicode: true,
       });
     });
     it('should return newline from blank lines', () => {
@@ -73,7 +73,7 @@ describe('PropertiesDocument', () => {
       expect(document.guessDefaults()).toEqual({
         separator: ': ',
         newLine: '\r\n',
-        unicodeEncoded: true,
+        escapedUnicode: true,
       });
     });
     it('should return unicodeEncoded=true for encoded chars', () => {
@@ -83,7 +83,7 @@ describe('PropertiesDocument', () => {
       expect(document.guessDefaults()).toEqual({
         separator: '=',
         newLine: '\n',
-        unicodeEncoded: true,
+        escapedUnicode: true,
       });
     });
     it('should return unicodeEncoded=false for unencoded chars', () => {
@@ -93,7 +93,7 @@ describe('PropertiesDocument', () => {
       expect(document.guessDefaults()).toEqual({
         separator: '=',
         newLine: '\n',
-        unicodeEncoded: false,
+        escapedUnicode: false,
       });
     });
     it('should return unicodeEncoded=true if neither encoded nor unencoded chars present', () => {
@@ -103,7 +103,7 @@ describe('PropertiesDocument', () => {
       expect(document.guessDefaults()).toEqual({
         separator: '=',
         newLine: '\n',
-        unicodeEncoded: true,
+        escapedUnicode: true,
       });
     });
   });

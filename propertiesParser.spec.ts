@@ -35,15 +35,7 @@ describe('parseProperties', () => {
     const doc = parseProperties(input);
 
     expect(doc).toEqual(
-      new PropertiesDocument([
-        new PropertyEntry('', 'key', '=', [
-          {
-            indent: '',
-            newline: '\n',
-            text: '',
-          },
-        ]),
-      ]),
+      new PropertiesDocument([new PropertyEntry('', 'key', '=', [{ indent: '', newline: '\n', text: '' }])]),
     );
   });
 
@@ -52,14 +44,35 @@ describe('parseProperties', () => {
     const doc = parseProperties(input);
 
     expect(doc).toEqual(
+      new PropertiesDocument([new PropertyEntry('', 'key', '', [{ indent: '', newline: '\n', text: '' }])]),
+    );
+  });
+
+  it('should parse space as separator', () => {
+    const input = 'key value\n';
+    const doc = parseProperties(input);
+
+    expect(doc).toEqual(
+      new PropertiesDocument([new PropertyEntry('', 'key', ' ', [{ indent: '', newline: '\n', text: 'value' }])]),
+    );
+  });
+
+  it('should parse tab as separator', () => {
+    const input = 'key\tvalue\n';
+    const doc = parseProperties(input);
+
+    expect(doc).toEqual(
+      new PropertiesDocument([new PropertyEntry('', 'key', '\t', [{ indent: '', newline: '\n', text: 'value' }])]),
+    );
+  });
+
+  it('should parse key with escaped colon', () => {
+    const input = 'key\\:still_key : value\n';
+    const doc = parseProperties(input);
+
+    expect(doc).toEqual(
       new PropertiesDocument([
-        new PropertyEntry('', 'key', '', [
-          {
-            indent: '',
-            newline: '\n',
-            text: '',
-          },
-        ]),
+        new PropertyEntry('', 'key\\:still_key', ' : ', [{ indent: '', newline: '\n', text: 'value' }]),
       ]),
     );
   });
@@ -68,15 +81,7 @@ describe('parseProperties', () => {
     const input = 'key=value';
     const doc = parseProperties(input);
     expect(doc).toEqual(
-      new PropertiesDocument([
-        new PropertyEntry('', 'key', '=', [
-          {
-            indent: '',
-            newline: '',
-            text: 'value',
-          },
-        ]),
-      ]),
+      new PropertiesDocument([new PropertyEntry('', 'key', '=', [{ indent: '', newline: '', text: 'value' }])]),
     );
   });
 
@@ -108,11 +113,7 @@ key_after_blank_line = start \\
         new CommentLine('  ', '!', ' comment with exclamation mark (indented)', '\n'),
         new PropertyEntry('', 'key', ' = ', [{ indent: '', newline: '\n', text: 'value' }]),
         new PropertyEntry('', 'key.subkey', '=', [
-          {
-            indent: '',
-            newline: '\n',
-            text: 'without spaces around separator',
-          },
+          { indent: '', newline: '\n', text: 'without spaces around separator' },
         ]),
         new PropertyEntry('  ', 'indented_key', ': ', [{ indent: '', newline: '\n', text: 'indented value' }]),
         new BlankLine('', '\n'),
