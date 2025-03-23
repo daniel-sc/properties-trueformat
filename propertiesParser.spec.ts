@@ -1,9 +1,3 @@
-/**********************************************************************
- * Tests
- *
- * The following tests use Node's built-in assert module.
- * They check round-trip parsing/serialization and simple modification.
- **********************************************************************/
 import { describe, it, expect } from 'bun:test';
 import { parseProperties } from './propertiesParser';
 import { PropertyEntry } from './model/propertyEntry';
@@ -37,7 +31,7 @@ describe('parseProperties', () => {
     expect(doc.toString()).toBe(input);
   });
 
-  it('should parse empty values', () => {
+  it('should parse empty value with separator', () => {
     const input = 'key=\n';
     const doc = parseProperties(input);
 
@@ -48,6 +42,39 @@ describe('parseProperties', () => {
             indent: '',
             newline: '\n',
             text: '',
+          },
+        ]),
+      ]),
+    );
+  });
+
+  it('should parse empty value without separator', () => {
+    const input = 'key\n';
+    const doc = parseProperties(input);
+
+    expect(doc).toEqual(
+      new PropertiesDocument([
+        new PropertyEntry('', 'key', '', [
+          {
+            indent: '',
+            newline: '\n',
+            text: '',
+          },
+        ]),
+      ]),
+    );
+  });
+
+  it('should handle no linebreak at the end', () => {
+    const input = 'key=value';
+    const doc = parseProperties(input);
+    expect(doc).toEqual(
+      new PropertiesDocument([
+        new PropertyEntry('', 'key', '=', [
+          {
+            indent: '',
+            newline: '',
+            text: 'value',
           },
         ]),
       ]),

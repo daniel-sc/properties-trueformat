@@ -25,4 +25,54 @@ export class PropertyEntry implements PropertyNode {
     }
     return result;
   }
+
+  /**
+   * Returns the text value of the property entry.
+   * This is the concatenation of all value segments.
+   * Any escape sequences are unescaped.
+   */
+  getText(): string {
+    return this.unescape(this.valueSegments.map((s) => s.text).join(''));
+  }
+
+  /**
+   * Sets the text value of the property entry.
+   * This will replace all existing value segments.
+   * If `escapeUnicode` is true, any unicode character will be escaped.
+   * Newlines, tabs and backslashes (and spaces at the beginning of a line) are always escaped.
+   */
+  setText(text: string, escapeUnicode: boolean, newLine = '\n'): void {
+    const escaped = text
+      .replace(/\\/g, '\\\\')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\t/g, '\\t')
+      .replace(/^ /g, '\\ ');
+    this.valueSegments = [
+      {
+        indent: '',
+        text: escapeUnicode ? this.escapeUnicode(escaped) : escaped,
+        newline: newLine,
+      },
+    ];
+  }
+
+  private unescape(s: string): string {
+    return s
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) =>
+        String.fromCharCode(parseInt(hex, 16)),
+      )
+      .replace(/\\\\/g, '\\')
+      .replace(/\\n/g, '\n')
+      .replace(/\\t/g, '\t')
+      .replace(/\\r/g, '\r')
+      .replace(/\\ /g, ' ');
+  }
+
+  private escapeUnicode(text: string) {
+    return text.replace(
+      /[\u007F-\uFFFF]/g,
+      (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'),
+    );
+  }
 }

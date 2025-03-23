@@ -20,6 +20,12 @@ Enjoy seamless, non-destructive editing of your Java properties files!
 - **AST-based Editing** \
   Provides an Abstract Syntax Tree for precise modifications. Change a property’s value or add new entries without reformatting the rest of the file.
 
+- **Text Escaping and Unescaping** \
+  Automatically escapes and unescapes special characters (e.g., newlines, tabs, backslashes, and unicode characters) in property values.
+
+- **Default Separator and Newline Guessing** \
+  Automatically determines the most common separator and newline characters used in the document for consistent formatting.
+
 ## Installation
 
 Install via npm:
@@ -113,3 +119,4 @@ key_after_blank_line = start \\
 Contributions, bug reports, and feature requests are welcome!
 
 Please open an issue or submit a pull request on the GitHub repository.
+
