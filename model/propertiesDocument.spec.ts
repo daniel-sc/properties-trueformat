@@ -92,9 +92,7 @@ describe('PropertiesDocument', () => {
       });
     });
     it('should return newline from blank lines', () => {
-      const document = new PropertiesDocument([
-        new BlankLine('', '\r\n'),
-      ]);
+      const document = new PropertiesDocument([new BlankLine('', '\r\n')]);
       expect(document.guessDefaults()).toEqual({
         separator: ': ',
         newLine: '\r\n',

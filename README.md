@@ -119,4 +119,3 @@ key_after_blank_line = start \\
 Contributions, bug reports, and feature requests are welcome!
 
 Please open an issue or submit a pull request on the GitHub repository.
-
