@@ -21,9 +21,7 @@ function endsWithContinuation(line: string): boolean {
  * - content: the line content without the newline,
  * - newline: the actual newline characters (if any).
  */
-function splitLinesPreserveNewline(
-  text: string,
-): { content: string; newline: string }[] {
+function splitLinesPreserveNewline(text: string): { content: string; newline: string }[] {
   const regex = /(.*?)(\r\n|\n|\r|$)/g;
   const lines: { content: string; newline: string }[] = [];
   let match: RegExpExecArray | null;
@@ -55,10 +53,7 @@ export function parseProperties(text: string): PropertiesDocument {
     }
 
     // Comment line: first non-whitespace char is '#' or '!'.
-    if (
-      line.content.trim().startsWith('#') ||
-      line.content.trim().startsWith('!')
-    ) {
+    if (line.content.trim().startsWith('#') || line.content.trim().startsWith('!')) {
       const m = line.content.match(/^(\s*)([#!])(.*)$/);
       if (m) {
         nodes.push(new CommentLine(m[1]!, m[2]!, m[3]!, line.newline));
@@ -104,21 +99,12 @@ export function parseProperties(text: string): PropertiesDocument {
 
     // Parse the separator.
     const sepStart = pos;
-    while (
-      pos < lineWithoutIndent.length &&
-      (lineWithoutIndent[pos] === ' ' || lineWithoutIndent[pos] === '\t')
-    ) {
+    while (pos < lineWithoutIndent.length && (lineWithoutIndent[pos] === ' ' || lineWithoutIndent[pos] === '\t')) {
       pos++;
     }
-    if (
-      pos < lineWithoutIndent.length &&
-      (lineWithoutIndent[pos] === '=' || lineWithoutIndent[pos] === ':')
-    ) {
+    if (pos < lineWithoutIndent.length && (lineWithoutIndent[pos] === '=' || lineWithoutIndent[pos] === ':')) {
       pos++; // include the separator character
-      while (
-        pos < lineWithoutIndent.length &&
-        (lineWithoutIndent[pos] === ' ' || lineWithoutIndent[pos] === '\t')
-      ) {
+      while (pos < lineWithoutIndent.length && (lineWithoutIndent[pos] === ' ' || lineWithoutIndent[pos] === '\t')) {
         pos++;
       }
     }
@@ -132,14 +118,8 @@ export function parseProperties(text: string): PropertiesDocument {
     // For the first line, use the parsed value portion.
     segments.push({
       indent: '', // no indent for the first segment (all part of the separator)
-      text:
-        entryLines.length === 1
-          ? firstValue
-          : firstValue.slice(0, firstValue.length - 1),
-      newline:
-        entryLines.length === 1
-          ? entryLines[0]!.newline
-          : `\\${entryLines[0]!.newline}`,
+      text: entryLines.length === 1 ? firstValue : firstValue.slice(0, firstValue.length - 1),
+      newline: entryLines.length === 1 ? entryLines[0]!.newline : `\\${entryLines[0]!.newline}`,
     });
     // For subsequent lines, use the entire line content.
     for (let j = 1; j < entryLines.length; j++) {
@@ -148,14 +128,8 @@ export function parseProperties(text: string): PropertiesDocument {
       const lineText = entryLines[j]!.content.substring(lineIndent.length);
       segments.push({
         indent: lineIndent,
-        text:
-          j === entryLines.length - 1
-            ? lineText
-            : lineText.slice(0, lineText.length - 1),
-        newline:
-          j === entryLines.length - 1
-            ? entryLines[j]!.newline
-            : `\\${entryLines[j]!.newline}`,
+        text: j === entryLines.length - 1 ? lineText : lineText.slice(0, lineText.length - 1),
+        newline: j === entryLines.length - 1 ? entryLines[j]!.newline : `\\${entryLines[j]!.newline}`,
       });
     }
 

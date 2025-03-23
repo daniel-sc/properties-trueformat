@@ -25,8 +25,7 @@ describe('parseProperties', () => {
   });
 
   it('should roundtrip mixed content', () => {
-    const input =
-      '  key1: value1\r\n# comment for key2\r\nkey2 value2\r\n\nkey3=value3';
+    const input = '  key1: value1\r\n# comment for key2\r\nkey2 value2\r\n\nkey3=value3';
     const doc = parseProperties(input);
     expect(doc.toString()).toBe(input);
   });
@@ -106,15 +105,8 @@ key_after_blank_line = start \\
     expect(doc).toEqual(
       new PropertiesDocument([
         new CommentLine('', '#', ' Example configuration file', '\n'),
-        new CommentLine(
-          '  ',
-          '!',
-          ' comment with exclamation mark (indented)',
-          '\n',
-        ),
-        new PropertyEntry('', 'key', ' = ', [
-          { indent: '', newline: '\n', text: 'value' },
-        ]),
+        new CommentLine('  ', '!', ' comment with exclamation mark (indented)', '\n'),
+        new PropertyEntry('', 'key', ' = ', [{ indent: '', newline: '\n', text: 'value' }]),
         new PropertyEntry('', 'key.subkey', '=', [
           {
             indent: '',
@@ -122,9 +114,7 @@ key_after_blank_line = start \\
             text: 'without spaces around separator',
           },
         ]),
-        new PropertyEntry('  ', 'indented_key', ': ', [
-          { indent: '', newline: '\n', text: 'indented value' },
-        ]),
+        new PropertyEntry('  ', 'indented_key', ': ', [{ indent: '', newline: '\n', text: 'indented value' }]),
         new BlankLine('', '\n'),
         new PropertyEntry('', 'key_after_blank_line', ' = ', [
           { indent: '', newline: '\\\n', text: 'start ' },

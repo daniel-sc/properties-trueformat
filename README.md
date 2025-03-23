@@ -39,12 +39,7 @@ npm install properties-trueformat
 Below is an example that reads a .properties file, updates a property, and writes it back without altering its formatting:
 
 ```ts
-import {
-  PropertiesDocument,
-  PropertyEntry,
-  parseProperties,
-} from 'properties-trueformat';
-import * as fs from 'fs';
+import { PropertiesDocument, PropertyEntry, parseProperties } from 'properties-trueformat';
 
 // alternatively, read the file content from disk
 const content = `# Example configuration file
@@ -65,21 +60,10 @@ const doc: PropertiesDocument = parseProperties(content);
 expect(doc).toEqual(
   new PropertiesDocument([
     new CommentLine('', '#', ' Example configuration file', '\n'),
-    new CommentLine(
-      '  ',
-      '!',
-      ' comment with exclamation mark (indented)',
-      '\n',
-    ),
-    new PropertyEntry('', 'key', ' = ', [
-      { indent: '', newline: '\n', text: 'value' },
-    ]),
-    new PropertyEntry('', 'key.subkey', '=', [
-      { indent: '', newline: '\n', text: 'without spaces around separator' },
-    ]),
-    new PropertyEntry('  ', 'indented_key', ': ', [
-      { indent: '', newline: '\n', text: 'indented value' },
-    ]),
+    new CommentLine('  ', '!', ' comment with exclamation mark (indented)', '\n'),
+    new PropertyEntry('', 'key', ' = ', [{ indent: '', newline: '\n', text: 'value' }]),
+    new PropertyEntry('', 'key.subkey', '=', [{ indent: '', newline: '\n', text: 'without spaces around separator' }]),
+    new PropertyEntry('  ', 'indented_key', ': ', [{ indent: '', newline: '\n', text: 'indented value' }]),
     new BlankLine('', '\n'),
     new PropertyEntry('', 'key_after_blank_line', ' = ', [
       { indent: '', newline: '\\\n', text: 'start ' },
@@ -90,9 +74,7 @@ expect(doc).toEqual(
 );
 
 // Find and update a property, e.g., change "username"
-const entry = doc.nodes
-  .filter((node) => node instanceof PropertyEntry)
-  .find((node) => node.key === 'indented_key');
+const entry = doc.nodes.filter((node) => node instanceof PropertyEntry).find((node) => node.key === 'indented_key');
 if (entry) {
   // Update the first segment of the value (for single-line properties)
   entry.valueSegments[0].text = 'updated value';

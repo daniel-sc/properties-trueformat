@@ -18,10 +18,7 @@ export class PropertyEntry implements PropertyNode {
     let result = this.indent + this.key + this.separator;
     // Append any continuation segments.
     for (let i = 0; i < this.valueSegments.length; i++) {
-      result +=
-        this.valueSegments[i]!.indent +
-        this.valueSegments[i]!.text +
-        this.valueSegments[i]!.newline;
+      result += this.valueSegments[i]!.indent + this.valueSegments[i]!.text + this.valueSegments[i]!.newline;
     }
     return result;
   }
@@ -59,9 +56,7 @@ export class PropertyEntry implements PropertyNode {
 
   private unescape(s: string): string {
     return s
-      .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) =>
-        String.fromCharCode(parseInt(hex, 16)),
-      )
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
       .replace(/\\\\/g, '\\')
       .replace(/\\n/g, '\n')
       .replace(/\\t/g, '\t')
@@ -70,9 +65,6 @@ export class PropertyEntry implements PropertyNode {
   }
 
   private escapeUnicode(text: string) {
-    return text.replace(
-      /[\u007F-\uFFFF]/g,
-      (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'),
-    );
+    return text.replace(/[\u007F-\uFFFF]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
   }
 }
