@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test';
 import { PropertiesDocument } from './propertiesDocument';
 import { PropertyEntry } from './propertyEntry';
 import { BlankLine } from './blankLine';
+import { CommentLine } from './commentLine';
 
 describe('PropertiesDocument', () => {
   describe('toString', () => {
@@ -31,6 +32,22 @@ describe('PropertiesDocument', () => {
         new PropertyEntry('  ', 'key3', '=', [{ indent: '', text: 'value', newline: '\n' }]),
       ]);
       expect(document.toString()).toBe('  key1: value\n  key2=value\n  key3=value\n');
+    });
+    it('should add a newline between a comment and an entry if it is missing', () => {
+      // this happens when the last line is a comment and then an entry is added
+      const document = new PropertiesDocument([
+        new CommentLine('', '#', 'comment', ''),
+        new PropertyEntry('', 'key', '=', [{ indent: '', text: 'value', newline: '' }]),
+      ]);
+      expect(document.toString()).toBe('#comment\nkey=value');
+    });
+    it('should add a newline between comments if it is missing', () => {
+      // this happens when the user manually edits the document
+      const document = new PropertiesDocument([
+        new CommentLine('', '#', 'comment1', ''),
+        new CommentLine('', '#', 'comment2', '\n'),
+      ]);
+      expect(document.toString()).toBe('#comment1\n#comment2\n');
     });
     it('should handle entry without value segment', () => {
       const document = new PropertiesDocument([new PropertyEntry('  ', 'key', ': ', [])]);

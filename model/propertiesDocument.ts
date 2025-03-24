@@ -22,17 +22,20 @@ export class PropertiesDocument {
     return this.nodes
       .map((node, index) => {
         const nodeString = node.toString();
-        if (
-          node instanceof PropertyEntry &&
-          node.valueSegments.length &&
-          node.valueSegments[node.valueSegments.length - 1]?.newline === '' &&
-          index < this.nodes.length - 1
-        ) {
+        if (this.getNewline(node) === '' && index < this.nodes.length - 1) {
           return nodeString + defaults().newLine;
         }
         return nodeString;
       })
       .join('');
+  }
+
+  private getNewline(node: PropertyEntry | CommentLine | BlankLine): string {
+    if (node instanceof PropertyEntry) {
+      return node.valueSegments.length ? node.valueSegments[node.valueSegments.length - 1]!.newline : '';
+    } else {
+      return node.newline;
+    }
   }
 
   /**
